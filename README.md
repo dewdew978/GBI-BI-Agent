@@ -16,11 +16,11 @@ graph TB
         C -->|get_database_schema| C1[Schema Tool]
         C -->|sql_query| D[2. sql_executor_agent]
         D -->|execute_sql_and_format| D1[SQL Execution Tool]
+        
+        %% ปรับชื่อเส้นให้ตรงตามข้อมูลที่ส่งออกจริง
         D -->|query_results| E[3. strategic_trend_analyst]
-        
-        
-        E -->|formatted_data| STA[4. data_formatter_agent]
-        STA -->|business_insights| F[5. insight_pipeline]
+        E -->|trend_insights| STA[4. data_formatter_agent]
+        STA -->|formatted_data| F[5. insight_pipeline]
 
         subgraph "insight_pipeline (SequentialAgent)"
             F --> G[visualization_agent]
@@ -35,8 +35,8 @@ graph TB
     style B fill:#fff4e1
     style C fill:#ffe1e1
     style D fill:#e1ffe1
-    style E fill:#f5e1ff
-    style STA fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style E fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style STA fill:#f5e1ff
     style F fill:#ffe1f5
     style G fill:#fff4e1
     style H fill:#e1ffe1
