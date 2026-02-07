@@ -5,6 +5,47 @@
 โปรเจกต์นี้เป็นการพัฒนาระบบ **Multi-Agent Business Intelligence (BI)** ที่แปลงคำถามภาษาธรรมดา (Natural Language) ให้กลายเป็นอินไซต์ทางธุรกิจที่นำไปใช้ได้จริง โดยออกแบบให้เอเจนต์หลายตัวทำงานร่วมกันอย่างเป็นลำดับผ่านเฟรมเวิร์ก **Google Agent Development Kit (ADK)**
 
 ---
+## Architecture Overview
+
+```mermaid
+graph TB
+    A[User Question] --> B[root_agent]
+
+    subgraph "root_agent (SequentialAgent)"
+        B --> C[1. text_to_sql_agent]
+        C -->|get_database_schema| C1[Schema Tool]
+        C -->|sql_query| D[2. sql_executor_agent]
+        D -->|execute_sql_and_format| D1[SQL Execution Tool]
+        D -->|query_results| E[3. strategic_trend_analyst]
+        
+        
+        E -->|formatted_data| STA[4. data_formatter_agent]
+        STA -->|business_insights| F[5. insight_pipeline]
+
+        subgraph "insight_pipeline (SequentialAgent)"
+            F --> G[visualization_agent]
+            G -->|chart_spec| H[explanation_agent]
+        end
+    end
+
+    H -->|Results| I[ADK Web / Gradio UI]
+    D1 -.->|queries| J[(MS SQL Server)]
+
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#ffe1e1
+    style D fill:#e1ffe1
+    style E fill:#f5e1ff
+    style STA fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style F fill:#ffe1f5
+    style G fill:#fff4e1
+    style H fill:#e1ffe1
+    style I fill:#f0f0f0
+    style J fill:#d4edda
+```
+---
+
+---
 
 ## 🚀 จุดเด่นของโปรเจกต์ (Key Features)
 
