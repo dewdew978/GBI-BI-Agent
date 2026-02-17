@@ -71,15 +71,6 @@ GBI-BI-Agent/
 * **ODBC Driver 18 for SQL Server** (สำหรับเชื่อมต่อฐานข้อมูล GBI)
 * **Gemini API Key** จาก Google AI Studio
 
----
-
-### 2. การติดตั้งไลบรารี (Installation)
-
-เปิด Terminal หรือ Command Prompt ในโฟลเดอร์โปรเจกต์ แล้วรันคำสั่ง:
-
-```bash
-pip install -r requirements.txt
-```
 
 ---
 
