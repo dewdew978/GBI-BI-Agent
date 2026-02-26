@@ -55,7 +55,7 @@ GBI-BI-Agent/
 │   ├── agent.py             # Prompt และการตั้งค่าเอเจนต์ทั้งหมด
 │   ├── tools.py             # เครื่องมือสำหรับเชื่อมต่อฐานข้อมูล
 │   ├── sql_executor.py      # ระบบตรวจสอบความปลอดภัยของ SQL
-│   └── .env                 # (สร้างเอง) เก็บ API Key และรหัสผ่านฐานข้อมูล
+│   └── .env.example         #  เก็บ API Key และรหัสผ่านฐานข้อมูล
 ├── app.py                   # ไฟล์สำหรับรัน Gradio Web UI
 ├── requirements.txt         # รายการไลบรารีที่ต้องติดตั้ง
 └── README.md                # เอกสารอธิบายโปรเจกต์
@@ -76,7 +76,7 @@ GBI-BI-Agent/
 
 ### 3. การตั้งค่าสภาพแวดล้อม (Environment Configuration)
 
-สร้างไฟล์ชื่อ `.env` ภายในโฟลเดอร์ `bi_agent/` และกำหนดค่าดังนี้:
+เปลี่ยนชื่อไฟล์ชื่อ `.env.example` ภายในโฟลเดอร์ `bi_agent/` เป็น `env`และกำหนดค่าดังนี้:
 
 ```env
 # Google API Key
