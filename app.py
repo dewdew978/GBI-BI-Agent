@@ -19,6 +19,7 @@ import random
 from datetime import datetime
 # Import root agent runner
 from bi_agent import root_runner
+from bi_agent.tools import generate_report_pdf
 
 # Global variable to store current dataframe for download
 current_df_storage = None
@@ -519,7 +520,17 @@ with gr.Blocks(css=css, theme=gr.themes.Monochrome()) as demo:
             explanation_output = gr.Markdown(
                 value="*Waiting for input...*"
             )
+    with gr.Row():
+        export_btn = gr.Button("Export to PDF Report")
+        file_output = gr.File(label="Download Report")
 
+    # เชื่อมต่อฟังก์ชัน (ตัวอย่างการเรียกใช้)
+    export_btn.click(
+        fn=generate_report_pdf,
+        inputs=[user_input, sql_output, data_output, explanation_output],
+        outputs=file_output
+    )
+    
     # Examples
     gr.Examples(
         examples=[

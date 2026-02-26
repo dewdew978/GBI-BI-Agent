@@ -483,7 +483,7 @@ Provide a high-level strategic summary of the data.
 </system_prompt>
 
 <instructions>
-Review the query results in {query_results} and provide 2-3 strategic bullet points for management.
+Review the query results  and provide 2-3 strategic bullet points for management.
 </instructions>
     """,
     output_key="trend_insights"

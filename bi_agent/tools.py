@@ -12,7 +12,8 @@ from typing import Dict, Any
 from dotenv import load_dotenv
 from .db_config import create_db_engine, get_schema_info
 from .sql_executor import execute_query, validate_sql
-
+from fpdf import FPDF
+import datetime
 # Load environment variables
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
@@ -202,3 +203,67 @@ def get_database_schema() -> str:
 
     except Exception as e:
         return f"Error retrieving schema: {str(e)}"
+
+import datetime
+import pandas as pd
+from fpdf import FPDF
+import re
+
+def generate_report_pdf(question, sql, trend, explanation):
+    """
+    สร้างไฟล์ PDF สรุปผลการวิเคราะห์ (เวอร์ชันภาษาอังกฤษล้วน)
+    """
+    pdf = FPDF()
+    pdf.add_page()
+    
+    def clean_text(text):
+        """กรองเฉพาะตัวอักษรภาษาอังกฤษ ตัวเลข และสัญลักษณ์มาตรฐาน (ลบ Emoji/ภาษาไทย)"""
+        if isinstance(text, pd.DataFrame):
+            text = text.to_string()
+        elif text is None:
+            return "N/A"
+        
+        # แปลงเป็น String และลบตัวอักษรที่ไม่ใช่ ASCII (เช่น Emoji 📈 หรือภาษาไทย)
+        text_str = str(text)
+        cleaned = text_str.encode('ascii', 'ignore').decode('ascii')
+        
+        # ลบช่องว่างส่วนเกินที่เกิดจากการลบตัวอักษร
+        return cleaned.strip()
+
+    # 1. Header
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(0, 10, "GBI Business Intelligence Report", ln=True, align='C')
+    pdf.set_font("Arial", size=10)
+    pdf.cell(0, 10, f"Generated on: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}", ln=True, align='R')
+    pdf.ln(10)
+
+    # 2. Section: Question
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, "User Question:", ln=True)
+    pdf.set_font("Arial", size=11)
+    pdf.multi_cell(0, 10, clean_text(question))
+    pdf.ln(5)
+
+    # 3. Section: SQL Query
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, "Generated SQL Query:", ln=True)
+    pdf.set_font("Courier", size=10)
+    pdf.multi_cell(0, 10, clean_text(sql))
+    pdf.ln(5)
+
+    # 4. Section: Strategic Insights
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, "Strategic Insights:", ln=True)
+    pdf.set_font("Arial", size=11)
+    pdf.multi_cell(0, 10, clean_text(trend))
+    pdf.ln(5)
+
+    # 5. Section: Executive Summary
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, "Executive Summary:", ln=True)
+    pdf.set_font("Arial", size=11)
+    pdf.multi_cell(0, 10, clean_text(explanation))
+
+    report_path = "gbi_report.pdf"
+    pdf.output(report_path)
+    return report_path
