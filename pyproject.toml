@@ -1,0 +1,15 @@
+[project]
+name = "gradio-adk-agent"
+version = "0.2.0"
+description = "Business Intelligence Agent with Gradio UI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-adk>=1.20.0",
+    "gradio>=6.1.0",
+    "pyodbc>=5.0.0",
+    "sqlalchemy>=2.0.0",
+    "pandas>=2.0.0",
+    "altair>=5.0.0",
+    "python-dotenv>=1.0.0",
+]
