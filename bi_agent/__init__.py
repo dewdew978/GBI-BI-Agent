@@ -13,7 +13,6 @@ from bi_agent.agent import (
     text_to_sql_agent,
     text_to_sql_runner,
     sql_executor_agent,
-    data_formatter_agent,
     visualization_agent,
     explanation_agent,
     # Pipelines
