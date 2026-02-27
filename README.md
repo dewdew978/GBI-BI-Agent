@@ -10,7 +10,7 @@
 
 * **Sequential Multi-Agent Pipeline**
   การทำงานแบบส่งต่อหน้าที่อย่างเป็นระบบ 5 ขั้นตอน:
-  **Text-to-SQL → SQL Executor → Data Formatter → Visualization → Explanation**
+  **Text-to-SQL → SQL Executor → Strategic Trend Analyst → Visualization → Explanation**
 
 * **Strategic Trend Analyst**
   เอเจนต์วิเคราะห์แนวโน้มเชิงกลยุทธ์ เพื่อให้คำแนะนำด้านการขาย การบริหารสต็อก และการตัดสินใจทางธุรกิจ
@@ -37,8 +37,8 @@
 2. **SQL Executor Agent**
    ตรวจสอบความปลอดภัยและรันคำสั่ง SQL บนฐานข้อมูล **MS SQL Server (GBI)**
 
-3. **Data Formatter Agent**
-   จัดรูปแบบผลลัพธ์ข้อมูลให้อยู่ในโครงสร้างที่พร้อมนำไปแสดงผล
+3. **Strategic Trend Analyst**
+   เอเจนต์วิเคราะห์แนวโน้มเชิงกลยุทธ์ เพื่อให้คำแนะนำด้านการขาย การบริหารสต็อก และการตัดสินใจทางธุรกิจ
 
 4. **Insight Pipeline**
 
