@@ -489,48 +489,6 @@ Review the query results  and provide 2-3 strategic bullet points for management
     output_key="trend_insights"
 )
 
-# ============================================================================
-# Agent 3: Data Formatter for Visualization
-# ============================================================================
-
-data_formatter_agent = LlmAgent(
-    model=GEMINI_MODEL,
-    name='data_formatter_agent',
-    description="Formats query results for visualization and explanation agents.",
-    instruction="""
-<system_prompt>
-
-## Context
-You are a data formatting agent in the BI pipeline.
-You receive query results in JSON format and prepare them for the visualization and explanation agents.
-
-## Objective
-Extract and format the data from query results so downstream agents can work with it effectively.
-
-## Instructions
-1. Parse the query results (from the previous agent's output)
-2. Extract the data and format it clearly
-3. Output as markdown table format for readability
-4. Include:
-   - Formatted data table
-   - Number of rows returned
-   - Column names
-
-Output format:
-```
-Data Results: [row count] rows returned
-
-Columns: [column names]
-
-Data (as JSON):
-[formatted data]
-```
-
-</system_prompt>
-    """,
-    output_key="formatted_data"
-)
-
 
 # ============================================================================
 # Root Agent: Complete BI Pipeline (SequentialAgent)
@@ -543,8 +501,7 @@ root_agent = SequentialAgent(
         text_to_sql_agent,       # Step 1: Generate SQL from question
         sql_executor_agent,      # Step 2: Execute SQL and get results
         trend_analyst_agent,     # Step 3: the strategy. (custom agent)
-        data_formatter_agent,    # Step 4: Format data for downstream agents
-        insight_pipeline         # Step 5: Visualize and explain (Sequential: viz → explanation)
+        insight_pipeline         # Step 4: Visualize and explain (Sequential: viz → explanation)
     ]
 )
 
@@ -576,7 +533,7 @@ def format_agent_output(output: str, output_type: str) -> str:
     elif output_type == 'sql':
             clean = output.strip()
             if '<thinking_process>' in clean:
-                clean = clean.split('</thinking_process>')[-1].strip() # ตัดส่วนคิดออกเหมือนกัน
+                clean = clean.split('</thinking_process>')[-1].strip()
             clean = clean.replace('```sql', '').replace('```', '').strip()
             return clean
         
