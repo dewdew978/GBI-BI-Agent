@@ -134,51 +134,6 @@ async def run_bi_pipeline_async(user_question: str):
 
     return results
 
-async def run_bi_pipeline_async(user_question: str):
-    """
-    Run the complete BI pipeline using root_runner.
-
-    This function executes the entire BI pipeline:
-    1. Text-to-SQL: Generate SQL from question
-    2. SQL Execution: Execute query against database
-    3. Data Formatting: Prepare results
-    4. Visualization: Generate Altair chart
-    5. Explanation: Provide plain-language insights
-
-    Args:
-        user_question: Natural language question from the user
-
-    Returns:
-        Dictionary with keys: sql_query, query_results, chart_spec, explanation_text
-    """
-    # Create session
-    session = await root_runner.session_service.create_session(
-        user_id='user',
-        app_name='bi_agent'
-    )
-
-    # Create user message
-    content = types.Content(
-        role='user',
-        parts=[types.Part(text=user_question)]
-    )
-
-    # Run the complete pipeline
-    events_async = root_runner.run_async(
-        user_id='user',
-        session_id=session.id,
-        new_message=content
-    )
-
-    # Extract results from state
-    results = {}
-    async for event in events_async:
-        if event.actions and event.actions.state_delta:
-            for key, value in event.actions.state_delta.items():
-                results[key] = value
-
-    return results
-
 
 async def process_request_async(message: str):
     """
