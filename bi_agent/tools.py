@@ -12,8 +12,9 @@ from typing import Dict, Any
 from dotenv import load_dotenv
 from .db_config import create_db_engine, get_schema_info
 from .sql_executor import execute_query, validate_sql
-from fpdf import FPDF
 import datetime
+from fpdf import FPDF
+import re
 # Load environment variables
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
@@ -204,10 +205,7 @@ def get_database_schema() -> str:
     except Exception as e:
         return f"Error retrieving schema: {str(e)}"
 
-import datetime
-import pandas as pd
-from fpdf import FPDF
-import re
+
 
 def generate_report_pdf(question, sql, trend, explanation):
     """
@@ -223,7 +221,7 @@ def generate_report_pdf(question, sql, trend, explanation):
         elif text is None:
             return "N/A"
         
-        # แปลงเป็น String และลบตัวอักษรที่ไม่ใช่ ASCII (เช่น Emoji 📈 หรือภาษาไทย)
+        # แปลงเป็น String และลบตัวอักษรที่ไม่ใช่ ASCII
         text_str = str(text)
         cleaned = text_str.encode('ascii', 'ignore').decode('ascii')
         
