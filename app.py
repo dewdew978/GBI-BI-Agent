@@ -424,8 +424,7 @@ with gr.Blocks(css=css, theme=gr.themes.Monochrome()) as demo:
     1. **Text-to-SQL Agent** → Generates SQL from natural language
     2. **SQL Executor Agent** → Executes SQL against database
     3. **Trend Analyst Agent** → Analyze what "significant" aspects of the data have in a business context.
-    4. **Data Formatter Agent** → Prepares results for visualization
-    5. **Insight Pipeline** (**SequentialAgent**) → Visualization Agent → Explanation Agent
+    4. **Insight Pipeline** (**SequentialAgent**) → Visualization Agent → Explanation Agent
 
     Database credentials are configured in `bi_agent/.env`
 
