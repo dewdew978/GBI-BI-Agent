@@ -62,19 +62,20 @@ The system utilizes a `SequentialAgent` structure, removing redundant formatting
 
 ```
 GBI-BI-Agent/
-├── bi_agent/                # Core Agent Logic
-│   ├── agent.py             # Optimized Multi-Agent Definitions
-│   ├── tools.py             # DB Connectors & Export Logic
-│   ├── __init__.py          # Package Export Configuration
-│   └── .env.example         # Template for Credentials
-├── app.py                   # Gradio Web UI with Export Features
-├── pyproject.toml           # uv project management file
-└── README.md                # Project Documentation
+├── bi_agent/                    # Main agent package
+│   ├── __init__.py              # Optimized package exports
+│   ├── agent.py                 # Multi-agent definitions & COMPASS prompts
+│   ├── tools.py                 # Database connectors & PDF/CSV export logic
+│   ├── sql_executor.py          # SQL security validation
+│   └── .env.example             # Template for API keys and credentials
+├── app.py                       # Gradio web interface & export logic
+├── pyproject.toml               # Dependency management (uv)
+└── README.md                    # Documentation
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+##  Installation & Setup
 
 This project uses `uv` for fast and reproducible Python environment management.
 
@@ -105,7 +106,55 @@ uv run app.py
 ```
 
 ---
+## Usage Guide
 
+### Example Questions to Try
+
+You can ask the GBI BI Agent a variety of business questions:
+
+| Category | Example Question |
+|----------|-----------------|
+| Product Analysis | "What are the top 10 products by price?" |
+| Category Insights | "Show me product categories and their average prices" |
+| Filtering | "List all products in the Bikes category" |
+| Aggregations | "How many products are there in each category?" |
+| Trends | "Show monthly sales trends for 2023" |
+
+---
+
+### Running the Interfaces
+
+The system supports **dual interfaces** using the same unified agent logic.
+
+#### Option 1: ADK Web Interface
+> Best for **debugging** and seeing how the AI "thinks".
+
+```bash
+uv run adk web
+```
+
+Then open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+Select `bi_agent` to view the **execution trace**, tool calls, and state updates in real-time.
+
+---
+
+#### Option 2: Gradio Web Interface
+> Best for **business users** and professional reporting.
+
+```bash
+uv run app.py
+```
+
+Then open: [http://127.0.0.1:7860](http://127.0.0.1:7860)
+
+Enter your question and click **"Analyze Data"** to view:
+- 🗄️ Generated SQL query
+- 📊 Interactive data tables
+- 📉 Altair charts
+- 💼 Executive business insights
+
+---
 ## 👥 Group 2 Members
 
 | Name | Student ID |
@@ -125,7 +174,6 @@ uv run app.py
 | Technology | Role |
 |------------|------|
 | Google Agent Development Kit (ADK) | Multi-agent orchestration |
-| Gemini Flash Lite | LLM backbone |
 | Microsoft SQL Server | Data source |
 | Gradio | Web UI |
 | Altair | Data visualization |
