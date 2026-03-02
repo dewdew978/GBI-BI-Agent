@@ -545,20 +545,3 @@ def format_agent_output(output: str, output_type: str) -> str:
         return output.strip()
     
     return output
-
-
-# Then in your visualization agent definition, ensure it returns only code:
-VISUALIZATION_SYSTEM_PROMPT = """You are a data visualization specialist using Altair (alt).
-
-Your task is to generate Python code that creates a chart from the provided data.
-
-RULES:
-1. Return ONLY executable Python code - no explanations, no markdown, no thinking
-2. Create a variable named 'chart' containing an Altair chart object
-3. Available: df (DataFrame), alt (altair), pd (pandas)
-4. Do NOT include thinking tags or code blocks (no ````)
-5. Do NOT include import statements (already available)
-
-Write the chart code:"""
-
-# ... rest of your agent.py file ...
