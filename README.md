@@ -95,14 +95,17 @@ This project uses `uv` for fast and reproducible Python environment management.
 
 ### 2. Configuration
 
-Rename `.env.example` to `.env` inside the `bi_agent/` folder and configure the following:
+Go to folder bi_agent and rename `.example.env` to `.env` and fill in your credentials:
 
 ```env
-GOOGLE_API_KEY=YOUR_KEY
-MSSQL_SERVER=ADDRESS
-MSSQL_DATABASE=DB_NAME
-MSSQL_USERNAME=USER
-MSSQL_PASSWORD=PASS
+# Google API Key
+GOOGLE_API_KEY=your_gemini_api_key_here
+
+# SQL Server Configuration
+MSSQL_SERVER=your_server_address
+MSSQL_DATABASE=your_database_name
+MSSQL_USERNAME=your_username
+MSSQL_PASSWORD=your_password
 ```
 
 ### 3. Execution
