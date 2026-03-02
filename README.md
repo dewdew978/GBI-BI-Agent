@@ -129,7 +129,6 @@ You can ask the GBI BI Agent a variety of business questions:
 | Category Insights | "Show me product categories and their average prices" |
 | Filtering | "List all products in the Bikes category" |
 | Aggregations | "How many products are there in each category?" |
-| Trends | "Show monthly sales trends for 2023" |
 
 ---
 
