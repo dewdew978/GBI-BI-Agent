@@ -164,7 +164,13 @@ Enter your question and click **"Analyze Data"** to view:
 - 📊 Interactive data tables
 - 📉 Altair charts
 - 💼 Executive business insights
-
+---
+## Database Safety
+- SQL Guardrails: Enforces a strict SELECT-only policy through hard constraints in the system prompt to block data-modifying commands such as DELETE, DROP, or UPDATE.
+- Schema Isolation: The agent is restricted to working only with tables and columns provided through the schema-retrieval tool, preventing unauthorized data access.
+- Credential Security: Sensitive connection details (Server, Username, Password) are stored in a secure .env file and are excluded from the GitHub repository.
+- Graceful Error Handling: Implements try-except blocks at the database connector level to catch errors and provide user-friendly feedback instead of a system crash.
+- Resource Management: Automatically encourages the use of row limits (e.g., TOP N) to prevent large-scale data fetches that could impact server performance.
 ---
 ## 👥 Group 2 Members
 
