@@ -81,9 +81,17 @@ This project uses `uv` for fast and reproducible Python environment management.
 
 ### 1. Prerequisites
 
+> [!IMPORTANT]
+> You need uv, a Gemini API key, and access to a SQL Server database.
+
+### Required Software
+- `uv` package manager - [Installation guide](https://github.com/kirenz/uv-setup)
 - Python 3.12+
 - ODBC Driver 18 for SQL Server
-- Gemini API Key (from [Google AI Studio](https://aistudio.google.com))
+
+### API Access
+- Free Gemini API key from [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
+- Microsoft SQL Server database access
 
 ### 2. Configuration
 
