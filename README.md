@@ -1,138 +1,131 @@
-# 🤖 GBI Business Intelligence Agent
+# GBI Business Intelligence Agent
 
-ระบบวิเคราะห์ข้อมูลอัจฉริยะสำหรับ **Global Bike Inc. (GBI)** ด้วย **Google ADK** และ **Gemini**
+An intelligent data analysis system for Global Bike Inc. (GBI) powered by Google ADK and Gemini LLM.
 
-โปรเจกต์นี้เป็นการพัฒนาระบบ **Multi-Agent Business Intelligence (BI)** ที่แปลงคำถามภาษาธรรมดา (Natural Language) ให้กลายเป็นอินไซต์ทางธุรกิจที่นำไปใช้ได้จริง โดยออกแบบให้เอเจนต์หลายตัวทำงานร่วมกันอย่างเป็นลำดับผ่านเฟรมเวิร์ก **Google Agent Development Kit (ADK)**
-
----
-
-## 🚀 จุดเด่นของโปรเจกต์ (Key Features)
-
-* **Sequential Multi-Agent Pipeline**
-  การทำงานแบบส่งต่อหน้าที่อย่างเป็นระบบ 5 ขั้นตอน:
-  **Text-to-SQL → SQL Executor → Strategic Trend Analyst → Visualization → Explanation**
-
-* **Strategic Trend Analyst**
-  เอเจนต์วิเคราะห์แนวโน้มเชิงกลยุทธ์ เพื่อให้คำแนะนำด้านการขาย การบริหารสต็อก และการตัดสินใจทางธุรกิจ
-
-* **Dual Interface**
-
-  * **ADK Web UI**: สำหรับการตรวจสอบและ Debug การทำงานของเอเจนต์
-  * **Gradio Web UI**: สำหรับผู้ใช้งานทั่วไป ใช้งานง่ายผ่านเว็บเบราว์เซอร์
-
-* **Enterprise Security**
-
-  * SQL Guardrails ป้องกันคำสั่งที่เป็นอันตราย
-  * จัดการข้อมูลสำคัญผ่านไฟล์ `.env` เพื่อความปลอดภัย
+This project leverages a Multi-Agent Business Intelligence (BI) architecture to transform natural language queries into actionable business insights. It is built using the Google Agent Development Kit (ADK) to orchestrate a sophisticated sequential workflow.
 
 ---
 
-## 🛠 สถาปัตยกรรมระบบ (System Architecture)
+## Key Features
 
-ระบบถูกออกแบบในรูปแบบ **SequentialAgent** โดยให้เอเจนต์แต่ละตัวรับผิดชอบหน้าที่เฉพาะทาง
-
-1. **Text-to-SQL Agent**
-   แปลงคำถามภาษาธรรมดาเป็นคำสั่ง SQL โดยอิงจาก Schema ของฐานข้อมูล
-
-2. **SQL Executor Agent**
-   ตรวจสอบความปลอดภัยและรันคำสั่ง SQL บนฐานข้อมูล **MS SQL Server (GBI)**
-
-3. **Strategic Trend Analyst**
-   เอเจนต์วิเคราะห์แนวโน้มเชิงกลยุทธ์ เพื่อให้คำแนะนำด้านการขาย การบริหารสต็อก และการตัดสินใจทางธุรกิจ
-
-4. **Insight Pipeline**
-
-   * **Visualization Agent**: สร้างกราฟเชิงโต้ตอบ (Interactive) ด้วย **Altair**
-   * **Explanation Agent**: สรุปผลลัพธ์ในมุมมองนักธุรกิจ พร้อมข้อเสนอแนะเชิงกลยุทธ์
+- **Optimized Sequential Pipeline:** A streamlined 4-step process designed to minimize token consumption and reduce response latency.
+- **Strategic Trend Analyst:** A specialized agent that analyzes raw JSON data to identify business trends and provide strategic recommendations.
+- **Graceful Error Handling:** Robust error-trapping at the database and SQL syntax levels ensures a smooth user experience even when connections fail or queries are invalid.
+- **Enterprise Reporting:** Supports professional data exports in both PDF (sanitized to remove LaTeX/Emoji errors) and CSV formats.
+- **Advanced Security:** SQL Guardrails strictly enforce `SELECT`-only permissions, with sensitive credentials managed via secure `.env` files.
 
 ---
 
-## 📁 โครงสร้างไฟล์โปรเจกต์ (Project Structure)
+##  Architecture Overview
 
-```text
-GBI-BI-Agent/
-├── bi_agent/                # โฟลเดอร์หลักของเอเจนต์
-│   ├── agent.py             # Prompt และการตั้งค่าเอเจนต์ทั้งหมด
-│   ├── tools.py             # เครื่องมือสำหรับเชื่อมต่อฐานข้อมูล
-│   ├── sql_executor.py      # ระบบตรวจสอบความปลอดภัยของ SQL
-│   └── .env.example         #  เก็บ API Key และรหัสผ่านฐานข้อมูล
-├── app.py                   # ไฟล์สำหรับรัน Gradio Web UI
-├── requirements.txt         # รายการไลบรารีที่ต้องติดตั้ง
-└── README.md                # เอกสารอธิบายโปรเจกต์
+```mermaid
+flowchart TD
+    UQ[User Question]
+    UQ --> root_agent[root_agent]
+
+    subgraph Main[ ]
+        root_agent --> text_to_sql["1. text_to_sql_agent"]
+        text_to_sql -. get_database_schema .-> schema[Schema Tool]
+        text_to_sql -- sql_query --> sql_exec["2. sql_executor_agent"]
+        sql_exec -- execute_sql_and_format --> sqltool[SQL Execution Tool]
+        sql_exec -- query_results --> analyst["3. strategic_trend_analyst"]
+        analyst -- "trend_insights + query_results" --> pip
+
+        subgraph pipeline_box["insight_pipeline (Sequential)"]
+            direction TB
+            pip["5. insight_pipeline"]
+            pip --> viz[visualization_agent]
+            viz -- chart_spec --> exp[explanation_agent]
+        end
+    end
+
+    sqltool -. queries .-> mssql[(MS SQL Server)]
+    pipeline_box -- Results --> ui[ADK Web / Gradio UI]
 ```
 
 ---
 
-## 🛠 วิธีการติดตั้งและเริ่มใช้งาน (Quick Start)
+## System Architecture
 
-### 1. การเตรียมตัว (Prerequisites)
+The system utilizes a `SequentialAgent` structure, removing redundant formatting steps for maximum efficiency:
 
-* Python **3.12+**
-* **ODBC Driver 18 for SQL Server** (สำหรับเชื่อมต่อฐานข้อมูล GBI)
-* **Gemini API Key** จาก Google AI Studio
-
+1. **Text-to-SQL Agent** — Maps natural language to accurate SQL queries based on the GBI database schema.
+2. **SQL Executor Agent** — Executes queries securely through a dedicated tool with built-in error handling.
+3. **Strategic Trend Analyst** — Extracts business insights and identifies performance patterns directly from raw data.
+4. **Insight Pipeline:**
+   - **Visualization Agent:** Generates interactive charts using Altair.
+   - **Explanation Agent:** Translates technical results into 2–4 concise executive summary sentences.
 
 ---
 
-### 3. การตั้งค่าสภาพแวดล้อม (Environment Configuration)
+## Project Structure
 
-เปลี่ยนชื่อไฟล์ชื่อ `.env.example` ภายในโฟลเดอร์ `bi_agent/` เป็น `env`และกำหนดค่าดังนี้:
+```
+GBI-BI-Agent/
+├── bi_agent/                # Core Agent Logic
+│   ├── agent.py             # Optimized Multi-Agent Definitions
+│   ├── tools.py             # DB Connectors & Export Logic
+│   ├── __init__.py          # Package Export Configuration
+│   └── .env.example         # Template for Credentials
+├── app.py                   # Gradio Web UI with Export Features
+├── pyproject.toml           # uv project management file
+└── README.md                # Project Documentation
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+This project uses `uv` for fast and reproducible Python environment management.
+
+### 1. Prerequisites
+
+- Python 3.12+
+- ODBC Driver 18 for SQL Server
+- Gemini API Key (from [Google AI Studio](https://aistudio.google.com))
+
+### 2. Configuration
+
+Rename `.env.example` to `.env` inside the `bi_agent/` folder and configure the following:
 
 ```env
-# Google API Key
-GOOGLE_API_KEY=YOUR_GEMINI_API_KEY
-
-# SQL Server Configuration (GBI Database)
-MSSQL_SERVER=SERVER_ADDRESS
-MSSQL_DATABASE=DATABASE_NAME
-MSSQL_USERNAME=USERNAME
-MSSQL_PASSWORD=PASSWORD
+GOOGLE_API_KEY=YOUR_KEY
+MSSQL_SERVER=ADDRESS
+MSSQL_DATABASE=DB_NAME
+MSSQL_USERNAME=USER
+MSSQL_PASSWORD=PASS
 ```
 
----
+### 3. Execution
 
-### 4. การรันแอปพลิเคชัน (Execution)
-
-แนะนำให้รันผ่าน **Gradio Web UI** ด้วยคำสั่ง:
+Run the application using the `uv` package manager:
 
 ```bash
-python app.py
-```
-
-เมื่อรันสำเร็จ ให้เปิดเว็บเบราว์เซอร์ไปที่:
-
-```
-http://127.0.0.1:7860
+uv run app.py
 ```
 
 ---
 
-## 👥 สมาชิกกลุ่ม 2
+## 👥 Group 2 Members
 
-* [นายปวริศ  ปัญสิงห์ 67070098]
-* [นายภูวิศ ทรายทอง  67070141]
-* [นายวีร์กฤต โอวาทสาร   67070168]
-* [นายสุวิจักขณ์ กุลฉัตรานนท์  67070190]
-* [นายอธิบดี  บูรณากาญจน์  67070195]
-* [นายเจริญทรัพย์  แก้วแสงสุข  67070212]
-* [นายปิติ หยาง 67070307]
-
----
-
-## 📄 License
-
-MIT License
+| Name | Student ID |
+|------|------------|
+| Pawarit Pansing | 67070098 |
+| Phuwit Saithong | 67070141 |
+| Veekrit Owartsan | 67070168 |
+| Suwijak Kulchatranon | 67070190 |
+| Athibadee Buranakan | 67070195 |
+| Charoensap Kaewsaengsuk | 67070212 |
+| Piti Yang | 67070307 |
 
 ---
 
-## 🧩 Framework & Technology
+## 🧩 Technology Stack
 
-* **Google Agent Development Kit (ADK)**
-* **Gemini (LLM)**
-* **MS SQL Server**
-* **Gradio**
-* **Altair**
-
----
-
-> โปรเจกต์นี้ออกแบบมาเพื่อสาธิตการประยุกต์ใช้ Multi-Agent AI ในงาน Business Intelligence ระดับองค์กร โดยเน้นความปลอดภัย ความยืดหยุ่น และการใช้งานจริง
+| Technology | Role |
+|------------|------|
+| Google Agent Development Kit (ADK) | Multi-agent orchestration |
+| Gemini Flash Lite | LLM backbone |
+| Microsoft SQL Server | Data source |
+| Gradio | Web UI |
+| Altair | Data visualization |
