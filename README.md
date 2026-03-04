@@ -1,6 +1,6 @@
 # GBI Business Intelligence Agent
 
-An intelligent data analysis system for Global Bike Inc. (GBI) powered by Google ADK and Gemini LLM.
+An intelligent data analysis system for **Global Bike Inc. (GBI)** powered by Google ADK and Gemini LLM.
 
 This project leverages a Multi-Agent Business Intelligence (BI) architecture to transform natural language queries into actionable business insights. It is built using the Google Agent Development Kit (ADK) to orchestrate a sophisticated sequential workflow.
 
@@ -8,15 +8,15 @@ This project leverages a Multi-Agent Business Intelligence (BI) architecture to 
 
 ## Key Features
 
-- **Optimized Sequential Pipeline:** A streamlined 4-step process designed to minimize token consumption and reduce response latency.
-- **Strategic Trend Analyst:** A specialized agent that analyzes raw JSON data to identify business trends and provide strategic recommendations.
-- **Graceful Error Handling:** Robust error-trapping at the database and SQL syntax levels ensures a smooth user experience even when connections fail or queries are invalid.
-- **Enterprise Reporting:** Supports professional data exports in both PDF (sanitized to remove LaTeX/Emoji errors) and CSV formats.
-- **Advanced Security:** SQL Guardrails strictly enforce `SELECT`-only permissions, with sensitive credentials managed via secure `.env` files.
+- **Optimized Sequential Pipeline** — A streamlined 4-step process designed to minimize token consumption and reduce response latency.
+- **Strategic Trend Analyst** — A specialized agent that analyzes raw JSON data to identify business trends and provide strategic recommendations.
+- **Graceful Error Handling** — Robust error-trapping at the database and SQL syntax levels ensures a smooth user experience even when connections fail or queries are invalid.
+- **Enterprise Reporting** — Supports professional data exports in both PDF (sanitized to remove LaTeX/Emoji errors) and CSV formats.
+- **Advanced Security** — SQL Guardrails strictly enforce `SELECT`-only permissions, with sensitive credentials managed via secure `.env` files.
 
 ---
 
-##  Architecture Overview
+## Architecture Overview
 
 ```mermaid
 flowchart TD
@@ -53,8 +53,8 @@ The system utilizes a `SequentialAgent` structure, removing redundant formatting
 2. **SQL Executor Agent** — Executes queries securely through a dedicated tool with built-in error handling.
 3. **Strategic Trend Analyst** — Extracts business insights and identifies performance patterns directly from raw data.
 4. **Insight Pipeline:**
-   - **Visualization Agent:** Generates interactive charts using Altair.
-   - **Explanation Agent:** Translates technical results into 2–4 concise executive summary sentences.
+   - **Visualization Agent** — Generates interactive charts using Altair.
+   - **Explanation Agent** — Translates technical results into 2–4 concise executive summary sentences.
 
 ---
 
@@ -75,53 +75,89 @@ GBI-BI-Agent/
 
 ---
 
-##  Installation & Setup
+## Installation & Setup
 
 This project uses `uv` for fast and reproducible Python environment management.
 
-### 1. Prerequisites
+### Prerequisites
 
 > [!IMPORTANT]
-> You need uv, a Gemini API key, and access to a SQL Server database.
+> You need `uv`, a Gemini API key, and access to a SQL Server database before proceeding.
 
-### Required Software
-- `uv` package manager - [Installation guide](https://github.com/kirenz/uv-setup)
+**Required Software:**
+- [`uv` package manager](https://github.com/kirenz/uv-setup)
 - Python 3.12+
 - ODBC Driver 18 for SQL Server
 
-### API Access
+**API Access:**
 - Free Gemini API key from [Google AI Studio](https://aistudio.google.com/prompts/new_chat)
-- Microsoft SQL Server database access
+- Microsoft SQL Server database credentials
 
-### 2. Configuration
+---
 
-Go to folder bi_agent and rename `.example.env` to `.env` and fill in your credentials:
+## Quick Start
+
+### 1. Clone and Install
+
+```bash
+# Clone the repository
+git clone https://github.com/kirenz/gradio-adk-agent.git
+
+# Navigate to the project directory
+cd gradio-adk-agent
+
+# Install dependencies
+uv sync
+```
+
+### 2. Configure Environment
+
+Navigate to the `bi_agent/` folder and rename `.example.env` to `.env`, then populate it with your credentials:
 
 ```env
-# Google API Key
+# Google Gemini API Key
 GOOGLE_API_KEY=your_gemini_api_key_here
 
-# SQL Server Configuration
+# Microsoft SQL Server Connection
 MSSQL_SERVER=your_server_address
 MSSQL_DATABASE=your_database_name
 MSSQL_USERNAME=your_username
 MSSQL_PASSWORD=your_password
 ```
 
-### 3. Execution
+> **Note:** Never commit your `.env` file to version control. It is already excluded via `.gitignore`.
 
-Run the application using the `uv` package manager:
+### 3. Launch the Application
+
+Two interface options are available, both powered by the same underlying `root_agent` pipeline.
+
+#### Option A — ADK Web Interface
+*Recommended for developers. Provides real-time execution traces, tool call inspection, and agent state visibility.*
+
+```bash
+uv run adk web
+```
+
+Open in your browser: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+Select `bi_agent` from the interface to view the execution trace, tool calls, and state updates in real-time.
+
+#### Option B — Gradio Interface
+*Recommended for business users. Provides a clean UI with SQL output, interactive charts, and executive summaries.*
 
 ```bash
 uv run app.py
 ```
 
+Open in your browser: [http://127.0.0.1:7860](http://127.0.0.1:7860)
+
+Enter your question and click **"Analyze Data"** to view the generated SQL query, interactive data tables, Altair charts, and executive business insights.
+
 ---
+
 ## Usage Guide
 
-### Example Questions to Try
-
-You can ask the GBI BI Agent a variety of business questions:
+### Example Questions
 
 | Category | Example Question |
 |----------|-----------------|
@@ -132,46 +168,32 @@ You can ask the GBI BI Agent a variety of business questions:
 
 ---
 
-### Running the Interfaces
-
-The system supports **dual interfaces** using the same unified agent logic.
-
-#### Option 1: ADK Web Interface
-> Best for **debugging** and seeing how the AI "thinks".
-
-```bash
-uv run adk web
-```
-
-Then open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-
-Select `bi_agent` to view the **execution trace**, tool calls, and state updates in real-time.
-
----
-
-#### Option 2: Gradio Web Interface
-> Best for **business users** and professional reporting.
-
-```bash
-uv run app.py
-```
-
-Then open: [http://127.0.0.1:7860](http://127.0.0.1:7860)
-
-Enter your question and click **"Analyze Data"** to view:
-- 🗄️ Generated SQL query
-- 📊 Interactive data tables
-- 📉 Altair charts
-- 💼 Executive business insights
----
 ## Database Safety
-- SQL Guardrails: Enforces a strict SELECT-only policy through hard constraints in the system prompt to block data-modifying commands such as DELETE, DROP, or UPDATE.
-- Schema Isolation: The agent is restricted to working only with tables and columns provided through the schema-retrieval tool, preventing unauthorized data access.
-- Credential Security: Sensitive connection details (Server, Username, Password) are stored in a secure .env file and are excluded from the GitHub repository.
-- Graceful Error Handling: Implements try-except blocks at the database connector level to catch errors and provide user-friendly feedback instead of a system crash.
-- Resource Management: Automatically encourages the use of row limits (e.g., TOP N) to prevent large-scale data fetches that could impact server performance.
+
+- **SQL Guardrails** — Enforces a strict `SELECT`-only policy through hard constraints in the system prompt, blocking all data-modifying commands such as `DELETE`, `DROP`, or `UPDATE`.
+- **Schema Isolation** — The agent is restricted to working only with tables and columns provided through the schema-retrieval tool, preventing unauthorized data access.
+- **Credential Security** — Sensitive connection details (server, username, password) are stored in a secure `.env` file and excluded from the repository.
+- **Graceful Error Handling** — Implements `try-except` blocks at the database connector level to catch errors and return user-friendly feedback instead of crashing.
+- **Resource Management** — Automatically encourages the use of row limits (e.g., `TOP N`) to prevent large-scale data fetches that could impact server performance.
+
 ---
-## 👥 Group 2 Members
+
+## Technology Stack
+
+| Technology | Role |
+|------------|------|
+| Google Agent Development Kit (ADK) | Multi-agent orchestration |
+| Microsoft SQL Server | Data source |
+| Gradio | Web UI |
+| Altair | Data visualization |
+| Python 3.12+ | Runtime |
+| uv | Dependency management |
+
+---
+
+## Team
+
+**Group 2**
 
 | Name | Student ID |
 |------|------------|
@@ -182,14 +204,3 @@ Enter your question and click **"Analyze Data"** to view:
 | Athibadee Buranakan | 67070195 |
 | Charoensap Kaewsaengsuk | 67070212 |
 | Piti Yang | 67070307 |
-
----
-
-## 🧩 Technology Stack
-
-| Technology | Role |
-|------------|------|
-| Google Agent Development Kit (ADK) | Multi-agent orchestration |
-| Microsoft SQL Server | Data source |
-| Gradio | Web UI |
-| Altair | Data visualization |
