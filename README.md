@@ -101,7 +101,7 @@ This project uses `uv` for fast and reproducible Python environment management.
 
 ```bash
 # Clone the repository
-git clone https://github.com/kirenz/gradio-adk-agent.git
+git clone https://github.com/dewdew978/GBI-BI-Agent.git
 
 # Navigate to the project directory
 cd gradio-adk-agent
